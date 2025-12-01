@@ -28,24 +28,22 @@ Rule-based engine detects:
 ### Admin Tools
 - View all login attempts
 - View generated threat alerts
-
----
-
-## 📁 Project Structure
+- 
+## Project Structure
 secure-auth-threat-detection/
-  backend/
-    src/
-      controllers/ # Route handlers (auth, admin, alerts)
-      middleware/ # Auth checks, rate limiting, logging
-      services/ # Business logic (auth, tokens, detection)
-      models/ # Database models (User, LoginAttempt, Alert)
-      routes/ # Express route definitions
-      app.ts # Express app config
-      server.ts # Server entrypoint
-      package.json
-      tsconfig.json
+└── backend/
+└── src/
+├── controllers/ # Route handlers (auth, admin, alerts)
+├── middleware/ # Auth checks, rate limiting, logging
+├── services/ # Business logic (auth, tokens, detection)
+├── models/ # Database models (User, LoginAttempt, Alert)
+├── routes/ # Express route definitions
+├── app.ts # Express app configuration
+└── server.ts # Server entrypoint
+├── package.json
+└── tsconfig.json
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Backend
 - **Node.js** + **TypeScript**
