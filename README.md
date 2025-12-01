@@ -4,28 +4,28 @@ A backend service that provides secure user authentication, detailed logging of 
 
 ---
 
-## 🚀 Features
+## Features
 
-### 🔐 Authentication
+### Authentication
 - User signup & login
 - Password hashing (bcrypt/argon2)
 - JWT access + refresh tokens
 - Role-based authorization (user/admin)
 
-### 🛡 Security & Logging
+### Security & Logging
 - Rate limiting (Redis)
 - IP + User-Agent logging
 - Persistent tracking of all login attempts
 - Suspicious activity analysis
 
-### 🚨 Threat Detection
+### Threat Detection
 Rule-based engine detects:
 - Multiple failed logins from same IP
 - Logins from unusual geographic locations
 - Location jumps with logins
 - Multiple users accessing from same IP
 
-### 🧰 Admin Tools
+### Admin Tools
 - View all login attempts
 - View generated threat alerts
 
