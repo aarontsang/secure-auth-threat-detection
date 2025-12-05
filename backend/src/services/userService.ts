@@ -1,7 +1,9 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { query } from "../db";
 
 export async function profile(user_id: string){
-  // In a real application, you would fetch user details from the database
-  return { success: true, id: user_id, message: "Welcome to your profile!" };
+  console.log("USER ID IN SERVICE:", user_id);
+  const userDetails = await query("SELECT id, email, firstName, lastName FROM users WHERE id = $1", [user_id]);
+  
+  const full_name = userDetails.rows[0].firstname + " " + userDetails.rows[0].lastname;
+  return { id: userDetails.rows[0].id, email: userDetails.rows[0].email, name: full_name };
 }

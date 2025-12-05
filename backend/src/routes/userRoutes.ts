@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { profile } from "../controllers/userController";
+import { requireAuth } from "../middleware/authMiddleware";
 
 const router = Router();
 
-router.post("/self", profile);
+router.get("/profile", requireAuth, profile);
 
 export default router;
