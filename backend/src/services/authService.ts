@@ -26,6 +26,18 @@ export async function login(email: string, password: string, ipAddress: string, 
     return { success: false, message: "User not found" };
   }
   
+  const recentLogins = await query(
+    `SELECT * FROM login_attempts 
+     WHERE email_entered = $1 
+     AND ts > NOW() - INTERVAL '5 minutes' 
+     AND success = false`,
+    [email]
+  );
+
+  if (recentLogins.rows.length >= 5) {
+    return { success: false, message: "Account locked due to multiple failed login attempts. Please try again later." };
+  }
+
   const user = existingUser.rows[0];
   const id = user.id;
   const isPasswordValid = await bcrypt.compare(password, user.password_hash);
