@@ -23,3 +23,20 @@ export async function alerts() {
   );
   return { success: true, alerts: result.rows };
 }
+
+export async function changePermission(userId: number, newPermission: string) {
+  if (!["user", "admin"].includes(newPermission)) {
+    return { success: false, message: "Invalid permission level" };
+  }
+  const result = await query(
+    `UPDATE users 
+     SET permission = $1 
+     WHERE id = $2 
+     RETURNING id, email, permission`,
+    [newPermission, userId]
+  );
+  if (result.rows.length === 0) {
+    return { success: false, message: "User not found" };
+  }
+  return { success: true, user: result.rows[0] };
+}

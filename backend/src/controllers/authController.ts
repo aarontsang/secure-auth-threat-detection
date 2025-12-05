@@ -23,12 +23,7 @@ export async function login(req: Request, res: Response) {
 }
 
 export async function refresh(req: Request, res: Response) {
-  const result = await authService.refresh(req.body.token);
-  res.json(result);
-}
-
-export async function changePermission(req: Request, res: Response) {
-  const { userId, newPermission } = req.body;
-  const result = await authService.changePermission(userId, newPermission);
+  const auth = req.headers.authorization;
+  const result = await authService.refresh(auth as string);
   res.json(result);
 }
