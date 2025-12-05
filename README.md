@@ -42,10 +42,10 @@ Rule-based engine detects:
 
 | Route | Authorization | Payload | Returns |
 | :------- | :------: | :-------: | :-------: |
-| auth/signup | None | Email (required), Password (required), First Name (Optional), Last Name (Optional) | user_id, email, first and last name |
-| auth/login | None | Email (required), Password (required) | JWT token and user_id |
-| auth/refresh | User/Admin | None | Refreshed JWT token |
-| profile/me | User/Admin | None | user_id, email, full name |
-| admin/logs | Admin | None | all login attempts for the last 24 hours |
-| admin/alerts | Admin | None | all alerts for the last 24 hours |
-| admin/change-permissions | Admin | user_id, permission | user_id, email, new permission |
+| POST auth/signup | None | Email (required), Password (required), First Name (Optional), Last Name (Optional) | user_id, email, first and last name |
+| POST auth/login | None | Email (required), Password (required) | JWT token and user_id |
+| GET auth/refresh | User/Admin | None | Refreshed JWT token |
+| GET profile/me | User/Admin | None | user_id, email, full name |
+| GET admin/logs | Admin | None | all login attempts for the last 24 hours |
+| GET admin/alerts | Admin | None | all alerts for the last 24 hours |
+| POST admin/change-permissions | Admin | user_id, permission | user_id, email, new permission |
