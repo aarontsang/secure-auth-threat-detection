@@ -21,3 +21,14 @@ export async function login(req: Request, res: Response) {
   const result = await authService.login(email, password, ip as string, userAgent as string);
   res.json(result);
 }
+
+export async function refresh(req: Request, res: Response) {
+  const result = await authService.refresh(req.body.token);
+  res.json(result);
+}
+
+export async function changePermission(req: Request, res: Response) {
+  const { userId, newPermission } = req.body;
+  const result = await authService.changePermission(userId, newPermission);
+  res.json(result);
+}

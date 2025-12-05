@@ -35,18 +35,44 @@ export async function login(email: string, password: string, ipAddress: string, 
   );
 
   if (recentLogins.rows.length >= 5) {
+    await query("INSERT INTO alerts (user_id, type, description, ip_address, created_at, resolved) VALUES ($1, $2, $3, $4, NOW(), FALSE)", [existingUser.rows[0].id, "Multiple failed login attempts", "Account locked due to multiple failed login attempts", ipAddress]);
     return { success: false, message: "Account locked due to multiple failed login attempts. Please try again later." };
   }
 
   const user = existingUser.rows[0];
   const id = user.id;
+  const perms = user.permission;
   const isPasswordValid = await bcrypt.compare(password, user.password_hash);
   if (!isPasswordValid) {
     await query("INSERT INTO login_attempts (user_id, email_entered, user_agent, ip_address, success, ts) VALUES ($1, $2, $3, $4, $5, NOW())", [id, email, userAgent, ipAddress, false]);
     return { success: false, message: "Invalid password"};
   }
-  const jwt_token = jwt.sign({ email: email, id: id }, process.env.JWT_SECRET as string, { expiresIn: "1h" });
+  const jwt_token = jwt.sign({ email: email, id: id, permission: perms }, process.env.JWT_SECRET as string, { expiresIn: "1h" });
   await query("INSERT INTO login_attempts (user_id, email_entered, user_agent, ip_address, success, ts) VALUES ($1, $2, $3, $4, $5, NOW())", [id, email, userAgent, ipAddress, true]);
 
   return { success: true, token: jwt_token, user_id: id};
+}
+
+export async function refresh(token: string) {
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as jwt.JwtPayload;
+    const newToken = jwt.sign({ email: decoded.email, id: decoded.id }, process.env.JWT_SECRET as string, { expiresIn: "1h" });
+    return { success: true, token: newToken };
+  } catch (error) {
+    return { success: false, message: "Invalid token" };
+  }
+}
+
+export async function changePermission(userId: number, newPermission: string) {
+  const result = await query(
+    `UPDATE users 
+     SET permission = $1 
+     WHERE id = $2 
+     RETURNING id, email, permission`,
+    [newPermission, userId]
+  );
+  if (result.rows.length === 0) {
+    return { success: false, message: "User not found" };
+  }
+  return { success: true, user: result.rows[0] };
 }

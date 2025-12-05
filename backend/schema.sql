@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
     role TEXT DEFAULT 'user',
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
+    permission TEXT DEFAULT 'user'
 );
 
 CREATE TABLE IF NOT EXISTS login_attempts (
