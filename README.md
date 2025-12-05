@@ -13,7 +13,6 @@ A backend service that provides secure user authentication, detailed logging of 
 - Role-based authorization (user/admin)
 
 ### Security & Logging
-- Rate limiting (Redis)
 - IP + User-Agent logging
 - Persistent tracking of all login attempts
 - Suspicious activity analysis
@@ -23,7 +22,6 @@ Rule-based engine detects:
 - Multiple failed logins from same IP
 - Logins from unusual geographic locations
 - Location jumps with logins
-- Multiple users accessing from same IP
 
 ### Admin Tools
 - View all login attempts
@@ -33,10 +31,21 @@ Rule-based engine detects:
 - **Node.js** + **TypeScript**
 - **Express.js**
 - **PostgreSQL** (persistent storage)
-- **Redis** (rate limiting & caching)
 - **JWT** for auth tokens
 - **bcrypt/argon2** for password hashing
 
 ### Dev Tools
-- Docker
 - Postman
+
+
+### APIs
+
+| Route | Authorization | Payload | Returns |
+| :------- | :------: | :-------: | :-------: |
+| auth/signup | None | Email (required), Password (required), First Name (Optional), Last Name (Optional) | user_id, email, first and last name |
+| auth/login | None | Email (required), Password (required) | JWT token and user_id |
+| auth/refresh | User/Admin | Refreshed JWT token |
+| profile/me | User/Admin | None | user_id, email, full name |
+| admin/logs | Admin | None | all login attempts for the last 24 hours |
+| admin/alerts | Admin | None | all alerts for the last 24 hours |
+| admin/change-permissions | Admin | user_id, permission | user_id, email, new permission |
